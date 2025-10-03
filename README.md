@@ -1,0 +1,1 @@
+![db_structure](imgs/db_structure.png)
