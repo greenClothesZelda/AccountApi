@@ -1,20 +1,24 @@
 package com.cushion.app.accountapi.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Getter
+@Setter
+@Table(name = "Account")
 public class AccountEntity {
     @Id
-    private int id;
     @NotBlank(message = "Username is mandatory")
+    @Column(name = "user_name")
     private String userName;
 
     @NotBlank(message = "Password is mandatory")
@@ -24,4 +28,7 @@ public class AccountEntity {
     @Email(message = "Email should be valid")
     private String email;
 
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private AccountCondition accountCondition;
 }
