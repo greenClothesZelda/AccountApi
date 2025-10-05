@@ -3,6 +3,8 @@ package com.cushion.app.accountapi.service;
 import com.cushion.app.accountapi.config.PasswordEncoder;
 import com.cushion.app.accountapi.model.AccountEntity;
 import com.cushion.app.accountapi.repository.UserRepository;
+import com.cushion.app.accountapi.service.exception.UserAlreadyExistException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +16,11 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public AccountEntity save(AccountEntity accountEntity) {
+    @Transactional
+    public AccountEntity register(AccountEntity accountEntity) {
+        if(userRepository.findByUserName(accountEntity.getUserName()).isPresent()) {
+            throw new UserAlreadyExistException("Username already exists");
+        }
         accountEntity.setPassword(passwordEncoder.encode(accountEntity.getPassword()));
         return userRepository.save(accountEntity);
     }
